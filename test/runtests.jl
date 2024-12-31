@@ -18,6 +18,18 @@ end
 
 @testset "FiniteContinuedFraction" begin
     @test quotients(continuedfraction(1//42)) == [0, 42]
+    
+    @testset "continuedfraction" begin
+        # continuedfraction(x::Real, y::Real, ::Type{T}=Int)
+        @test quotients(continuedfraction(73, 71)) == [1,35,2]
+        @test quotients(continuedfraction(100,1)) == [100]
+
+        # continuedfraction(x::AbstractFloat, ::Type{T}=Int)
+        @test quotients(continuedfraction(1.25)) == [1,4]
+
+        # continuedfraction(x::Rational{T})
+        @test quotients(continuedfraction(1/4)) == [0,4]
+    end
 end
 
 @testset "IrrationalContinuedFraction" begin
