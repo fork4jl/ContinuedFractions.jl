@@ -30,4 +30,16 @@ using Test
             @test quotients(cf)[i] == 1
         end
     end
+
+    @test eltype(convergents(1//42)) === Rational{Int}
+    @test eltype(convergents(big"1"/10)) === Rational{BigInt}
+
+    # Rational
+    @test collect(convergents(1//42))[end] == 1//42
+    # BigFloat
+    @test collect(convergents(big"1"/10))[end] == 1//10
+    # AbstractFloat
+    @test collect(convergents(3.14))[end] == 157//50
+    # Integer
+    @test collect(convergents(42))[end] == 42
 end
