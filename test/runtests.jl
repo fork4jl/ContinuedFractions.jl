@@ -32,7 +32,16 @@ end
 end
 
 @testset "IrrationalContinuedFraction" begin
-    @test isempty(quotients(continuedfraction(pi, Int)))
+    @testset "continuedfraction" begin
+        # continuedfraction(c::AbstractIrrational, T； prec)
+        @test isempty(quotients(continuedfraction(pi)))
+        @test isempty(quotients(continuedfraction(pi, Int)))
+        @test isempty(quotients(continuedfraction(pi, Int; prec=64)))
+    end
+
+    @test eltype(continuedfraction(pi)) == Int
+end
+
 end
 
 include("oeis_ref.jl")
