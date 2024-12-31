@@ -78,6 +78,22 @@ end
     end
 end
 
+@testset "ConvergentIterator" begin
+    # Rational: Finite
+    finite_cf = convergents(3.14)
+    # Irrational: infinite
+    inf_cf = convergents(pi)
+    @test Base.IteratorSize(finite_cf) == Base.HasLength()
+    @test_broken Base.IteratorSize(inf_cf) == Base.IsInfinite()
+    @test length(finite_cf) > 0
+    @test length(inf_cf) == 0
+    @test eltype(finite_cf) == Rational{Int}
+    @test eltype(inf_cf) == Rational{Int}
+    # @test !Base.isdone(finite_cf)
+    # @test !Base.isdone(inf_cf)
+    # Calc
+    # @test finite_cf[1] == 3
+    # @test inf_cf[1] == 3
 end
 
 include("oeis_ref.jl")
