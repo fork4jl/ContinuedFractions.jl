@@ -1,5 +1,14 @@
 import Base.MathConstants: e, φ
 
+"""
+    mutable IrrationalContinuedFraction{T<:Integer, C}
+
+Represents a continued fraction for an irrational number.
+
+# Fields
+The fields of a structure are *not* part of the public API.
+Please use helper functions to access them, such as [`quotients`](@ref).
+"""
 mutable struct IrrationalContinuedFraction{T<:Integer, C} <: ContinuedFraction{T}
     precision::Int
     quotients::Vector{T}
