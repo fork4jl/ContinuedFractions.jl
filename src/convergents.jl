@@ -1,4 +1,4 @@
-immutable ConvergentIterator{T<:Integer,CF<:ContinuedFraction}
+struct ConvergentIterator{T<:Integer,CF<:ContinuedFraction}
     cf::CF
 end
 
@@ -19,4 +19,3 @@ function next(it::ConvergentIterator, state)
 end
 
 eltype{T,CF}(it::ConvergentIterator{T,CF}) = Rational{T}
-

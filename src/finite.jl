@@ -1,5 +1,5 @@
 # rationals have finite continued fractions
-immutable FiniteContinuedFraction{T<:Integer} <: ContinuedFraction{T}
+struct FiniteContinuedFraction{T<:Integer} <: ContinuedFraction{T}
     quotients::Vector{T}
 end
 

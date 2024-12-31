@@ -8,8 +8,8 @@ import Base: start, done, next, length, eltype, getindex
 export ContinuedFraction, FiniteContinuedFraction, IrrationalContinuedFraction,
     ConvergentIterator, continuedfraction, convergents
 
-abstract ContinuedFraction{T<:Integer}
-eltype{T}(::ContinuedFraction{T}) = T
+abstract type ContinuedFraction{T<:Integer} end
+eltype(::ContinuedFraction{T}) where {T<:Integer} = T
 
 include("finite.jl")
 include("irrational.jl")

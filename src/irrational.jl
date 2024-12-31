@@ -1,4 +1,4 @@
-type IrrationalContinuedFraction{T<:Integer, C} <: ContinuedFraction{T}
+struct IrrationalContinuedFraction{T<:Integer, C} <: ContinuedFraction{T}
     precision::Int
     quotients::Vector{T}
 end
@@ -67,4 +67,3 @@ function getindex{T<:Integer}(::IrrationalContinuedFraction{T,MathConst{:φ}}, i
     i >= 1 || throw(BoundsError())
     1
 end
-
