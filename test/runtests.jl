@@ -1,45 +1,99 @@
 using ContinuedFractions
 using Test
 
-@testset "ContinuedFractions.jl" begin
-    cf = ContinuedFraction(sqrt(2))
-    @test quotients(cf)[1] == 1
-    for i in 2:15
-        @test quotients(cf)[i] == 2
-    end
-    @test abs(collect(convergents(cf))[end] - sqrt(2)) < 10e-16
-    
-    cf = ContinuedFraction(sqrt(3))
-    @test quotients(cf)[1] == 1
-    for i in 2:15
-        if mod(i, 2) == 0
-            @test quotients(cf)[i] == 1
-        else
-            @test quotients(cf)[i] == 2
-        end
-    end
-    @test abs(collect(convergents(cf))[end] - sqrt(3)) < 10e-16
-    @test abs(collect(convergents(sqrt(3)))[end] - sqrt(3)) < 10e-16
+include("OEIS.jl")
+import .OEIS
 
-    cf = ContinuedFraction(1ℯ)
-    @test quotients(cf)[1] == 2
-    for i in 2:15
-        if mod(i, 3) == 0
-            @test quotients(cf)[i] == fld(i, 3) * 2
-        else
-            @test quotients(cf)[i] == 1
-        end
+@testset "ContinuedFraction" begin
+    @testset "eltype" begin
+        # FiniteContinuedFraction{T<:Integer}
+        @test eltype(continuedfraction(1//42)) == Int
+        @test eltype(continuedfraction(big"1"//42)) == BigInt
+        # IrrationalContinuedFraction{T<:Integer, C}
+        @test eltype(continuedfraction(pi, Int32)) == Int32
+        @test eltype(continuedfraction(pi, BigInt)) == BigInt
     end
-
-    @test eltype(convergents(1//42)) === Rational{Int}
-    @test eltype(convergents(big"1"/10)) === Rational{BigInt}
-
-    # Rational
-    @test collect(convergents(1//42))[end] == 1//42
-    # BigFloat
-    @test collect(convergents(big"1"/10))[end] == 1//10
-    # AbstractFloat
-    @test collect(convergents(3.14))[end] == 157//50
-    # Integer
-    @test collect(convergents(42))[end] == 42
 end
+
+@testset "FiniteContinuedFraction" begin
+    @test quotients(continuedfraction(1//42)) == [0, 42]
+    
+    @testset "continuedfraction" begin
+        # continuedfraction(x::Real, y::Real, ::Type{T}=Int)
+        @test quotients(continuedfraction(73, 71)) == [1,35,2]
+        @test quotients(continuedfraction(100,1)) == [100]
+
+        # continuedfraction(x::AbstractFloat, ::Type{T}=Int)
+        @test quotients(continuedfraction(1.25)) == [1,4]
+
+        # continuedfraction(x::Rational{T})
+        @test quotients(continuedfraction(1/4)) == [0,4]
+    end
+
+    @testset "Iteration Interfaces" begin
+        cf_pi = continuedfraction(3.1415926)
+        @test length(cf_pi) > 0
+        @test !Base.isdone(cf_pi)
+        @test eltype(cf_pi) == Int
+        # Calc
+        @test cf_pi[1] == 3
+        # [3  7  15  1  292  1  1  1  2  1]
+        @test length(cf_pi[1:10]) == 10
+        @test length(cf_pi) >= 10
+        @test !Base.isdone(cf_pi)
+    end
+end
+
+@testset "IrrationalContinuedFraction" begin
+    @testset "continuedfraction" begin
+        # continuedfraction(c::AbstractIrrational, T； prec)
+        @test isempty(quotients(continuedfraction(pi)))
+        @test isempty(quotients(continuedfraction(pi, Int)))
+        @test isempty(quotients(continuedfraction(pi, Int; prec=64)))
+    end
+
+    @testset "Iteration Interfaces" begin
+        cf_pi = continuedfraction(pi)
+        @test Base.IteratorSize(cf_pi) == Base.IsInfinite()
+        @test length(cf_pi) == 0
+        @test !Base.isdone(cf_pi)
+        @test eltype(cf_pi) == Int
+        # Calc
+        @test cf_pi[1] == 3
+        # [3  7  15  1  292  1  1  1  2  1]
+        @test length(cf_pi[1:10]) == 10
+        @test length(cf_pi) >= 10
+        @test !Base.isdone(cf_pi)
+    end
+
+    @testset "getindex()" begin
+        # Special cases
+        # \euler ℯ = 2.7182818284590...
+        @test continuedfraction(MathConstants.ℯ)[1:5] == [2, 1, 2, 1, 1]
+
+        # golden (φ = 1.6180339887498...)
+        for i in rand(1:1000, 5)
+            @test continuedfraction(MathConstants.φ)[i] == 1
+        end
+    end
+end
+
+@testset "ConvergentIterator" begin
+    # Rational: Finite
+    finite_cf = convergents(3.14)
+    # Irrational: infinite
+    inf_cf = convergents(pi)
+    @test Base.IteratorSize(finite_cf) == Base.HasLength()
+    @test_broken Base.IteratorSize(inf_cf) == Base.IsInfinite()
+    @test length(finite_cf) > 0
+    @test length(inf_cf) == 0
+    @test eltype(finite_cf) == Rational{Int}
+    @test eltype(inf_cf) == Rational{Int}
+    # @test !Base.isdone(finite_cf)
+    # @test !Base.isdone(inf_cf)
+    # Calc
+    # @test finite_cf[1] == 3
+    # @test inf_cf[1] == 3
+end
+
+include("oeis_ref.jl")
