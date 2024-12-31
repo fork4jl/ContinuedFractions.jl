@@ -1,5 +1,4 @@
-using OEIS
-using Iterators
+import .OEIS: oeis
 
 function test_cf_oeis(c,id)
     # quotients of pi
@@ -28,5 +27,3 @@ test_conv_oeis(e,  :A007676, :A007677)
 test_conv_oeis(γ,  :A046114, :A046115)
 test_conv_oeis(catalan,  :A153069, :A153070, 2)
 test_conv_oeis(golden, :A000045, :A000045, 2, 1)
-
-# 
