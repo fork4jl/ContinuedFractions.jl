@@ -1,4 +1,16 @@
-# rationals have finite continued fractions
+
+"""
+    FiniteContinuedFraction{T<:Integer}
+
+A type of representation of **rational numbers** using
+*finite* term connected fractions with Integer quotients.
+
+# Fields
+The fields of a structure are *not* part of the public API.
+Please use helper functions to access them, such as [`quotients`](@ref).
+
+# Examples
+"""
 struct FiniteContinuedFraction{T<:Integer} <: ContinuedFraction{T}
     quotients::Vector{T}
 end
