@@ -1,4 +1,4 @@
-import Base.MathConstants: e, φ
+import Base.MathConstants: ℯ, φ
 
 """
     mutable IrrationalContinuedFraction{T<:Integer, C}
@@ -113,7 +113,7 @@ end
 
 
 #= Special cases with known patterns =#
-function getindex(::IrrationalContinuedFraction{T,Irrational{:e}}, i::Int) where {T<:Integer}
+function getindex(::IrrationalContinuedFraction{T,Irrational{:ℯ}}, i::Int) where {T<:Integer}
     i >= 1 || throw(BoundsError())
     if i==1
         2

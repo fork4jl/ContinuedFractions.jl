@@ -69,7 +69,7 @@ end
     @testset "getindex()" begin
         # Special cases
         # \euler ℯ = 2.7182818284590...
-        @test continuedfraction(MathConstants.e)[1:5] == [2, 1, 2, 1, 1]
+        @test continuedfraction(MathConstants.ℯ)[1:5] == [2, 1, 2, 1, 1]
 
         # golden (φ = 1.6180339887498...)
         for i in rand(1:1000, 5)
