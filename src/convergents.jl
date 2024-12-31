@@ -1,4 +1,13 @@
 
+"""
+    ConvergentIterator{T<:Integer, CF<:ContinuedFraction{T}}
+    ConvergentIterator(cf::ContinuedFraction{T}) where {T<:Integer}
+
+An iterator type for generating the convergents of a continued fraction.
+
+# Fields
+The fields of a structure are *not* part of the public API.
+"""
 struct ConvergentIterator{T<:Integer, CF<:ContinuedFraction{T}}
     cf::CF
 end
