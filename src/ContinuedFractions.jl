@@ -5,8 +5,11 @@ module ContinuedFractions
 
 import Base: start, done, next, length, eltype, getindex
 
-export ContinuedFraction, FiniteContinuedFraction, IrrationalContinuedFraction,
-    ConvergentIterator, continuedfraction, convergents
+export ContinuedFraction, continuedfraction, 
+    FiniteContinuedFraction,
+    IrrationalContinuedFraction,
+    ConvergentIterator, convergents
+
 
 abstract type ContinuedFraction{T<:Integer} end
 eltype(::ContinuedFraction{T}) where {T<:Integer} = T
