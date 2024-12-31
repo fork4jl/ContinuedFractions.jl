@@ -32,6 +32,12 @@ Return the quotients of the given `ContinuedFraction` object `cf`.
 """
 quotients(cf::ContinuedFraction)
 
+#= Iteration Interfaces =#
+# Syntax like cf[1:end]
+function getindex(cf::ContinuedFraction{T}, r::AbstractRange) where {T<:Integer}
+    return T[ cf[i] for i in r ]
+end
+
 
 include("finite.jl")
 include("irrational.jl")

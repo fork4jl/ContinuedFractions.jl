@@ -83,10 +83,6 @@ function Base.getindex(cf::IrrationalContinuedFraction, i::Int)
     end
     cf.quotients[i]
 end
-# Syntax like cf[1:end]
-function getindex(cf::IrrationalContinuedFraction, r::AbstractVector)
-    [cf[i] for i in r]
-end
 
 eps_error(c::AbstractIrrational) = 1<<20  # assume accurate to within 20 bits?
 
