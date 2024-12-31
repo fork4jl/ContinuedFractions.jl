@@ -11,7 +11,15 @@ export ContinuedFraction, continuedfraction,
     ConvergentIterator, convergents
 
 
+"""
+    ContinuedFraction{T<:Integer}
+
+An abstract type representing a continued fraction with elements of type `T`, 
+where `T` is a subtype of `Integer`.
+This type serves as a base for defining specific types of continued fractions.
+"""
 abstract type ContinuedFraction{T<:Integer} end
+
 eltype(::ContinuedFraction{T}) where {T<:Integer} = T
 
 include("finite.jl")
