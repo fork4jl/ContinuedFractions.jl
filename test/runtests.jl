@@ -39,7 +39,19 @@ end
         @test isempty(quotients(continuedfraction(pi, Int; prec=64)))
     end
 
-    @test eltype(continuedfraction(pi)) == Int
+    @testset "Iteration Interfaces" begin
+        cf_pi = continuedfraction(pi)
+        @test Base.IteratorSize(cf_pi) == Base.IsInfinite()
+        @test length(cf_pi) == 0
+        @test !Base.isdone(cf_pi)
+        @test eltype(cf_pi) == Int
+        # Calc
+        @test cf_pi[1] == 3
+        # [3  7  15  1  292  1  1  1  2  1]
+        @test length(cf_pi[1:10]) == 10
+        @test length(cf_pi) >= 10
+        @test !Base.isdone(cf_pi)
+    end
 end
 
 end
