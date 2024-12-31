@@ -33,15 +33,17 @@ Base.iterate(it::ConvergentIterator{T,CF}) where {T<:Integer,CF} =
 
 
 """
-    convergents(x::Real) -> ConvergentIterator
+    convergents(x...) -> ConvergentIterator
 
 Compute the convergents of a input.
 
 # Returns
 - `ConvergentIterator`: An iterator over the convergents of the continued fraction.
 
+See [`continuedfraction`](@ref)
+
 # Examples
 ```
 ```
 """
-convergents(x::Real) = ConvergentIterator(continuedfraction(x))
+convergents(x...) = ConvergentIterator(continuedfraction(x...))
