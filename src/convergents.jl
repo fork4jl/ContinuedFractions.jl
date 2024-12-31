@@ -13,6 +13,7 @@ struct ConvergentIterator{T<:Integer, CF<:ContinuedFraction{T}}
 end
 
 #= Iteration Interfaces =#
+Base.IteratorSize(::ConvergentIterator{T,CF}) where {T,CF} = Base.IteratorSize(CF)
 Base.length(it::ConvergentIterator) = length(it.cf)
 Base.eltype(it::ConvergentIterator{T,CF}) where {T,CF} = Rational{T}
 """

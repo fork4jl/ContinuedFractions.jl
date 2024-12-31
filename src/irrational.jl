@@ -58,6 +58,19 @@ function continuedfraction(
 end
 
 #= Iteration Interfaces =#
+# NOTE: The IteratorSize of IrrationalContinuedFraction is Inf.
+#   since for this type we cannot determine the iteration end.
+#   But we still define Base.length for convenience
+Base.IteratorSize(::IrrationalContinuedFraction) = Base.IsInfinite()
+"""
+    length(cf::IrrationalContinuedFraction)
+
+This function returns the length of the current `quotients()` array,
+not the maximum iterable length of `IrrationalContinuedFraction`.
+
+!!! warning
+    DO-NOT use this function to do for-loop
+"""
 Base.length(cf::IrrationalContinuedFraction) = length(quotients(cf))
 # Never stop
 Base.isdone(cf::IrrationalContinuedFraction, idx::Int=1) = false

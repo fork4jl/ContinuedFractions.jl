@@ -3,7 +3,7 @@ This module provides functionality for working with continued fractions.
 """
 module ContinuedFractions
 
-import Base: iterate, length, eltype, isdone, getindex
+import Base: IteratorSize, iterate, length, eltype, isdone, getindex
 
 export ContinuedFraction, continuedfraction, quotients,
     FiniteContinuedFraction,
