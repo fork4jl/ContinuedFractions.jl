@@ -1,4 +1,5 @@
 import .OEIS: oeis
+import Base.MathConstants: e, γ, catalan, golden
 
 function test_cf_oeis(c,id)
     # quotients of pi
