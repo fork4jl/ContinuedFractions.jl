@@ -19,7 +19,8 @@ using Test
         end
     end
     @test abs(collect(convergents(cf))[end] - sqrt(3)) < 10e-16
-    
+    @test abs(collect(convergents(sqrt(3)))[end] - sqrt(3)) < 10e-16
+
     cf = ContinuedFraction(1ℯ)
     @test quotients(cf)[1] == 2
     for i in 2:15
