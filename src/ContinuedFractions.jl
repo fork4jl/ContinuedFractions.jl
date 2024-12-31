@@ -5,7 +5,7 @@ module ContinuedFractions
 
 import Base: start, done, next, length, eltype, getindex
 
-export ContinuedFraction, continuedfraction, 
+export ContinuedFraction, continuedfraction, quotients,
     FiniteContinuedFraction,
     IrrationalContinuedFraction,
     ConvergentIterator, convergents
@@ -21,6 +21,17 @@ This type serves as a base for defining specific types of continued fractions.
 abstract type ContinuedFraction{T<:Integer} end
 
 eltype(::ContinuedFraction{T}) where {T<:Integer} = T
+
+"""
+    quotients(cf::ContinuedFraction) -> Vector{T}
+
+Return the quotients of the given `ContinuedFraction` object `cf`.
+
+# Returns
+- A vector containing the quotients of the continued fraction.
+"""
+quotients(cf::ContinuedFraction)
+
 
 include("finite.jl")
 include("irrational.jl")

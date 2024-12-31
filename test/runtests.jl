@@ -16,3 +16,10 @@ using Test
     end
 end
 
+@testset "FiniteContinuedFraction" begin
+    @test quotients(continuedfraction(1//42)) == [0, 42]
+end
+
+@testset "IrrationalContinuedFraction" begin
+    @test isempty(quotients(continuedfraction(pi, Int)))
+end

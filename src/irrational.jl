@@ -5,6 +5,11 @@ struct IrrationalContinuedFraction{T<:Integer, C} <: ContinuedFraction{T}
     quotients::Vector{T}
 end
 
+"""
+    quotients(cf::IrrationalContinuedFraction)
+"""
+quotients(cf::IrrationalContinuedFraction) = cf.quotients
+
 eps_error(c::AbstractIrrational) = 1<<20 # assume accurate to within 20 bits?
 
 function compute!(cf::IrrationalContinuedFraction{T,C}, prec::Int) where {T<:Integer,C}

@@ -3,6 +3,11 @@ struct FiniteContinuedFraction{T<:Integer} <: ContinuedFraction{T}
     quotients::Vector{T}
 end
 
+"""
+    quotients(cf::FiniteContinuedFraction)
+"""
+quotients(cf::FiniteContinuedFraction) = cf.quotients
+
 # continued fraction for the ratio of x and y
 function continuedfraction(x::Real, y::Real, ::Type{T}=Int) where {T<:Integer}
     qs = T[]
