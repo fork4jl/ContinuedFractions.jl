@@ -20,7 +20,24 @@ end
 """
 quotients(cf::FiniteContinuedFraction) = cf.quotients
 
-# continued fraction for the ratio of x and y
+
+"""
+    continuedfraction(x::Real, y::Real, ::Type{T}=Int)
+
+Build continued fraction from the ratio of `x` and `y`.
+
+# Examples
+```jldoctest
+julia> continuedfraction(3, 9)
+FiniteContinuedFraction{Int64}([0, 3])
+
+julia> continuedfraction(9, 3)
+FiniteContinuedFraction{Int64}([3])
+
+julia> continuedfraction(11, 9)
+FiniteContinuedFraction{Int64}([1, 4, 2])
+```
+"""
 function continuedfraction(x::Real, y::Real, ::Type{T}=Int) where {T<:Integer}
     qs = T[]
     r = y
@@ -34,9 +51,37 @@ function continuedfraction(x::Real, y::Real, ::Type{T}=Int) where {T<:Integer}
     FiniteContinuedFraction(qs)
 end
 
+"""
+    continuedfraction(x::AbstractFloat, ::Type{T}=Int)
+
+Build continued fraction from float point number `x`.
+
+# Examples
+```jldoctest
+julia> continuedfraction(0.0)
+FiniteContinuedFraction{Int64}([0])
+
+julia> continuedfraction(1.0)
+FiniteContinuedFraction{Int64}([1])
+
+julia> continuedfraction(0.5)
+FiniteContinuedFraction{Int64}([0, 2])
+```
+"""
 continuedfraction(x::AbstractFloat, ::Type{T}=Int) where {T<:Integer} =
     continuedfraction(x, one(x), T)
 
+"""
+    continuedfraction(x::Rational{T})
+
+Build continued fraction from Rational number `x`.
+
+# Examples
+```jldoctest
+julia> continuedfraction(0//1)
+FiniteContinuedFraction{Int64}([0])
+```
+"""
 continuedfraction(x::Rational{T}) where {T<:Integer} =
     continuedfraction(x.num, x.den, T)                 
 
