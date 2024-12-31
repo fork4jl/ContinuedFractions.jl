@@ -21,6 +21,34 @@ end
 quotients(cf::IrrationalContinuedFraction) = cf.quotients
 
 #= Helper functions for construct IrrationalContinuedFraction =#
+"""
+    continuedfraction(
+        c::AbstractIrrational,
+        ::Type{T}=Int
+        ; prec::Int=precision(BigFloat)
+    ) where {T<:Integer} -> IrrationalContinuedFraction{T,typeof(c)}
+
+Constructs an `IrrationalContinuedFraction` for the given irrational number `c`.
+
+# Arguments
+- `c`: The irrational number for which the continued fraction is to be constructed.
+- `T`: The type of the integers in the continued fraction.
+    Defaults to `Int`.
+- `prec`: The precision to be used for the continued fraction.
+    Defaults to the precision of `BigFloat` (256).
+
+# Examples
+```jldoctest
+julia> continuedfraction(pi)
+IrrationalContinuedFraction{Int64, Irrational{:π}}(256, Int64[])
+
+julia> continuedfraction(pi, BigInt)
+IrrationalContinuedFraction{BigInt, Irrational{:π}}(256, BigInt[])
+
+julia> continuedfraction(pi, BigInt; prec=1024)
+IrrationalContinuedFraction{BigInt, Irrational{:π}}(1024, BigInt[])
+```
+"""
 function continuedfraction(
         c::AbstractIrrational,
         ::Type{T}=Int
