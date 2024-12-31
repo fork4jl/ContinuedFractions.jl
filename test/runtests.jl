@@ -29,6 +29,19 @@ end
         # continuedfraction(x::Rational{T})
         @test quotients(continuedfraction(1/4)) == [0,4]
     end
+
+    @testset "Iteration Interfaces" begin
+        cf_pi = continuedfraction(3.1415926)
+        @test length(cf_pi) > 0
+        @test !Base.isdone(cf_pi)
+        @test eltype(cf_pi) == Int
+        # Calc
+        @test cf_pi[1] == 3
+        # [3  7  15  1  292  1  1  1  2  1]
+        @test length(cf_pi[1:10]) == 10
+        @test length(cf_pi) >= 10
+        @test !Base.isdone(cf_pi)
+    end
 end
 
 @testset "IrrationalContinuedFraction" begin
