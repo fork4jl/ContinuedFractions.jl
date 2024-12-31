@@ -21,8 +21,12 @@ end
 quotients(cf::IrrationalContinuedFraction) = cf.quotients
 
 #= Helper functions for construct IrrationalContinuedFraction =#
-function continuedfraction(c::AbstractIrrational, ::Type{T}=Int) where {T<:Integer}
-    cf = IrrationalContinuedFraction{T,typeof(c)}(precision(BigFloat),T[])
+function continuedfraction(
+        c::AbstractIrrational,
+        ::Type{T}=Int
+        ; prec::Int=precision(BigFloat)
+    ) where {T<:Integer}
+    IrrationalContinuedFraction{T,typeof(c)}(prec, T[])
 end
 
 #= Iteration Interfaces =#
