@@ -4,7 +4,7 @@ struct FiniteContinuedFraction{T<:Integer} <: ContinuedFraction{T}
 end
 
 # continued fraction for the ratio of x and y
-function continuedfraction{T<:Integer}(x::Real, y::Real, ::Type{T}=Int)
+function continuedfraction(x::Real, y::Real, ::Type{T}=Int) where {T<:Integer}
     qs = T[]
     r = y
     r_p = x
@@ -17,10 +17,10 @@ function continuedfraction{T<:Integer}(x::Real, y::Real, ::Type{T}=Int)
     FiniteContinuedFraction(qs)
 end
 
-continuedfraction{T<:Integer}(x::FloatingPoint, ::Type{T}=Int) =
+continuedfraction(x::AbstractFloat, ::Type{T}=Int) where {T<:Integer} =
     continuedfraction(x, one(x), T)
 
-continuedfraction{T<:Integer}(x::Rational, ::Type{T}=Int) =
+continuedfraction(x::Rational, ::Type{T}=Int) where {T<:Integer} =
     continuedfraction(x.num, x.den, T)                 
 
 start(cf::FiniteContinuedFraction) = start(cf.quotients)

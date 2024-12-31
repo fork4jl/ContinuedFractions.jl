@@ -1,11 +1,13 @@
+import Base.MathConstants: e, φ
+
 struct IrrationalContinuedFraction{T<:Integer, C} <: ContinuedFraction{T}
     precision::Int
     quotients::Vector{T}
 end
 
-eps_error(c::MathConst) = 1<<20 # assume accurate to within 20 bits?
+eps_error(c::AbstractIrrational) = 1<<20 # assume accurate to within 20 bits?
 
-function compute!{T,C}(cf::IrrationalContinuedFraction{T,C}, prec::Int)
+function compute!(cf::IrrationalContinuedFraction{T,C}, prec::Int) where {T<:Integer,C}
     with_bigfloat_precision(prec) do
         qs = T[]
         r = big(1.0)
@@ -30,7 +32,7 @@ function compute!{T,C}(cf::IrrationalContinuedFraction{T,C}, prec::Int)
     cf
 end
 
-function continuedfraction{T<:Integer}(c::MathConst, ::Type{T}=Int)
+function continuedfraction(c::AbstractIrrational, ::Type{T}=Int) where {T<:Integer}
     cf = IrrationalContinuedFraction{T,typeof(c)}(get_bigfloat_precision(),T[])
 end
 
@@ -52,7 +54,7 @@ end
 
 
 # cases with known patterns
-function getindex{T<:Integer}(::IrrationalContinuedFraction{T,MathConst{:e}}, i::Integer)
+function getindex(::IrrationalContinuedFraction{T,Irrational{:e}}, i::Int) where {T<:Integer}
     i >= 1 || throw(BoundsError())
     if i==1
         2
@@ -63,7 +65,7 @@ function getindex{T<:Integer}(::IrrationalContinuedFraction{T,MathConst{:e}}, i:
     end
 end
 
-function getindex{T<:Integer}(::IrrationalContinuedFraction{T,MathConst{:φ}}, i::Integer)
+function getindex(::IrrationalContinuedFraction{T,Irrational{:φ}}, i::Int) where {T<:Integer}
     i >= 1 || throw(BoundsError())
     1
 end
