@@ -15,21 +15,13 @@ struct FiniteContinuedFraction{T<:Integer} <: ContinuedFraction{T}
     quotients::Vector{T}
 end
 
+#= Helper functions for access internal fields =#
 """
     quotients(cf::FiniteContinuedFraction)
 """
 quotients(cf::FiniteContinuedFraction) = cf.quotients
 
-#= Iteration Interfaces =#
-Base.length(cf::FiniteContinuedFraction) = length(quotients(cf))
-Base.isdone(cf::FiniteContinuedFraction, idx::Int=1) = idx > length(cf)
-Base.getindex(cf::FiniteContinuedFraction, i::Int) = getindex(quotients(cf), i)
-function Base.iterate(cf::FiniteContinuedFraction, idx::Int=1)
-    isdone(cf, idx) && return nothing
-    cf[idx], state + 1
-end
-
-
+#= Helper functions for construct FiniteContinuedFraction =#
 """
     continuedfraction(x::Real, y::Real, ::Type{T}=Int)
 
@@ -93,3 +85,12 @@ FiniteContinuedFraction{Int64}([0])
 """
 continuedfraction(x::Rational{T}) where {T<:Integer} =
     continuedfraction(x.num, x.den, T)                 
+
+#= Iteration Interfaces =#
+Base.length(cf::FiniteContinuedFraction) = length(quotients(cf))
+Base.isdone(cf::FiniteContinuedFraction, idx::Int=1) = idx > length(cf)
+Base.getindex(cf::FiniteContinuedFraction, i::Int) = getindex(quotients(cf), i)
+function Base.iterate(cf::FiniteContinuedFraction, idx::Int=1)
+    isdone(cf, idx) && return nothing
+    cf[idx], state + 1
+end

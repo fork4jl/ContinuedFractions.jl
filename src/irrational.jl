@@ -14,15 +14,23 @@ mutable struct IrrationalContinuedFraction{T<:Integer, C} <: ContinuedFraction{T
     quotients::Vector{T}
 end
 
+#= Helper functions for access internal fields =#
 """
     quotients(cf::IrrationalContinuedFraction)
 """
 quotients(cf::IrrationalContinuedFraction) = cf.quotients
 
+#= Helper functions for construct IrrationalContinuedFraction =#
+function continuedfraction(c::AbstractIrrational, ::Type{T}=Int) where {T<:Integer}
+    cf = IrrationalContinuedFraction{T,typeof(c)}(precision(BigFloat),T[])
+end
+
 #= Iteration Interfaces =#
 Base.length(cf::IrrationalContinuedFraction) = length(quotients(cf))
 # Never stop
 Base.isdone(cf::IrrationalContinuedFraction, idx::Int=1) = false
+Base.iterate(cf::IrrationalContinuedFraction, idx::Int=1) = (cf[idx], idx+1)
+# getindex will lazily get the value with the specified precision.
 function Base.getindex(cf::IrrationalContinuedFraction, i::Int)
     while i > length(cf)
         # keep doubling precision until sufficient accuracy obtained
@@ -30,10 +38,12 @@ function Base.getindex(cf::IrrationalContinuedFraction, i::Int)
     end
     cf.quotients[i]
 end
-Base.iterate(cf::IrrationalContinuedFraction, idx::Int=1) = (cf[idx], idx+1)
+# Syntax like cf[1:end]
+function getindex(cf::IrrationalContinuedFraction, r::AbstractVector)
+    [cf[i] for i in r]
+end
 
-
-eps_error(c::AbstractIrrational) = 1<<20 # assume accurate to within 20 bits?
+eps_error(c::AbstractIrrational) = 1<<20  # assume accurate to within 20 bits?
 
 function compute!(cf::IrrationalContinuedFraction{T,C}, prec::Int) where {T<:Integer,C}
     setprecision(BigFloat, prec) do
@@ -60,16 +70,8 @@ function compute!(cf::IrrationalContinuedFraction{T,C}, prec::Int) where {T<:Int
     cf
 end
 
-function continuedfraction(c::AbstractIrrational, ::Type{T}=Int) where {T<:Integer}
-    cf = IrrationalContinuedFraction{T,typeof(c)}(precision(BigFloat),T[])
-end
 
-
-function getindex(cf::IrrationalContinuedFraction, r::AbstractVector)
-    [cf[i] for i in r]
-end
-
-# cases with known patterns
+#= Special cases with known patterns =#
 function getindex(::IrrationalContinuedFraction{T,Irrational{:e}}, i::Int) where {T<:Integer}
     i >= 1 || throw(BoundsError())
     if i==1
