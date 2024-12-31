@@ -35,4 +35,4 @@ end
     @test isempty(quotients(continuedfraction(pi, Int)))
 end
 
-include("cmp_oeis.jl")
+include("oeis_ref.jl")
