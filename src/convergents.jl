@@ -3,18 +3,22 @@ struct ConvergentIterator{T<:Integer, CF<:ContinuedFraction{T}}
     cf::CF
 end
 
-ConvergentIterator(cf::ContinuedFraction{T}) where {T<:Integer} = ConvergentIterator{T,typeof(cf)}(cf)
-
 convergents(x::Real) = ConvergentIterator(continuedfraction(x))
 
-start(it::ConvergentIterator{T,CF}) where {T,CF} = start(it.cf), one(T)//zero(T), zero(T)//one(T)
-done(it::ConvergentIterator, state) = done(it.cf, state[1])
-length(it::ConvergentIterator) = length(it.cf)
-function next(it::ConvergentIterator, state)
-    i, r, r_p  = state
-    q, i_n = next(it.cf, i)
-    r_n = (q*r.num + r_p.num) // (q*r.den + r_p.den)
-    return r_n, (i_n, r_n, r)
+#= Iteration Interfaces =#
+Base.length(it::ConvergentIterator) = length(it.cf)
+Base.eltype(it::ConvergentIterator{T,CF}) where {T,CF} = Rational{T}
+"""
+(Int, Rational{T}, Rational{T})
+"""
+const ConvStateType{T} = Tuple{Int, Rational{T}, Rational{T}} where {T<:Integer}
+Base.isdone(it::ConvergentIterator{T,CF}, state::ConvStateType{T}) where {T<:Integer,CF} =
+    isdone(it.cf, state[1])
+function Base.iterate(it::ConvergentIterator{T,CF}, state::ConvStateType{T}) where {T<:Integer,CF}
+    i, r, r_prev  = state
+    q, i_next = iterate(it.cf, i)
+    r_next = (q*r.num + r_prev.num) // (q*r.den + r_prev.den)
+    return r_next, (i_next, r_next, r)
 end
-
-eltype(it::ConvergentIterator{T,CF}) where {T,CF} = Rational{T}
+Base.iterate(it::ConvergentIterator{T,CF}) where {T<:Integer,CF} =
+    iterate(it, (1, one(T)//zero(T), zero(T)//one(T)))

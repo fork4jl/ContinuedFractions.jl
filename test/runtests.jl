@@ -1,9 +1,8 @@
 using ContinuedFractions
 using Test
 
-# include("OEIS.jl")
-# import .OEIS
-# include("cmp_oeis.jl")
+include("OEIS.jl")
+import .OEIS
 
 @testset "ContinuedFraction" begin
     @testset "eltype" begin
@@ -35,3 +34,5 @@ end
 @testset "IrrationalContinuedFraction" begin
     @test isempty(quotients(continuedfraction(pi, Int)))
 end
+
+include("cmp_oeis.jl")

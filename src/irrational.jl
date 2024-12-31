@@ -1,6 +1,6 @@
 import Base.MathConstants: e, φ
 
-struct IrrationalContinuedFraction{T<:Integer, C} <: ContinuedFraction{T}
+mutable struct IrrationalContinuedFraction{T<:Integer, C} <: ContinuedFraction{T}
     precision::Int
     quotients::Vector{T}
 end
@@ -9,6 +9,20 @@ end
     quotients(cf::IrrationalContinuedFraction)
 """
 quotients(cf::IrrationalContinuedFraction) = cf.quotients
+
+#= Iteration Interfaces =#
+Base.length(cf::IrrationalContinuedFraction) = length(quotients(cf))
+# Never stop
+Base.isdone(cf::IrrationalContinuedFraction, idx::Int=1) = false
+function Base.getindex(cf::IrrationalContinuedFraction, i::Int)
+    while i > length(cf)
+        # keep doubling precision until sufficient accuracy obtained
+        compute!(cf, cf.precision*2)
+    end
+    cf.quotients[i]
+end
+Base.iterate(cf::IrrationalContinuedFraction, idx::Int=1) = (cf[idx], idx+1)
+
 
 eps_error(c::AbstractIrrational) = 1<<20 # assume accurate to within 20 bits?
 
@@ -41,22 +55,10 @@ function continuedfraction(c::AbstractIrrational, ::Type{T}=Int) where {T<:Integ
     cf = IrrationalContinuedFraction{T,typeof(c)}(precision(BigFloat),T[])
 end
 
-start(cf::IrrationalContinuedFraction) = 1
-done(cf::IrrationalContinuedFraction, i::Int) = false
-next(cf::IrrationalContinuedFraction, i::Int) = cf[i], i+1
-
-function getindex(cf::IrrationalContinuedFraction, i::Integer)    
-    while i > length(cf.quotients)
-        # keep doubling precision until sufficient accuracy obtained
-        compute!(cf, cf.precision*2)
-    end
-    cf.quotients[i]
-end
 
 function getindex(cf::IrrationalContinuedFraction, r::AbstractVector)
     [cf[i] for i in r]
 end
-
 
 # cases with known patterns
 function getindex(::IrrationalContinuedFraction{T,Irrational{:e}}, i::Int) where {T<:Integer}

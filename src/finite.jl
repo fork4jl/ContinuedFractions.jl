@@ -20,6 +20,15 @@ end
 """
 quotients(cf::FiniteContinuedFraction) = cf.quotients
 
+#= Iteration Interfaces =#
+Base.length(cf::FiniteContinuedFraction) = length(quotients(cf))
+Base.isdone(cf::FiniteContinuedFraction, idx::Int=1) = idx > length(cf)
+Base.getindex(cf::FiniteContinuedFraction, i::Int) = getindex(quotients(cf), i)
+function Base.iterate(cf::FiniteContinuedFraction, idx::Int=1)
+    isdone(cf, idx) && return nothing
+    cf[idx], state + 1
+end
+
 
 """
     continuedfraction(x::Real, y::Real, ::Type{T}=Int)
@@ -84,9 +93,3 @@ FiniteContinuedFraction{Int64}([0])
 """
 continuedfraction(x::Rational{T}) where {T<:Integer} =
     continuedfraction(x.num, x.den, T)                 
-
-start(cf::FiniteContinuedFraction) = start(cf.quotients)
-done(cf::FiniteContinuedFraction) = done(cf.quotients)
-next(cf::FiniteContinuedFraction, i) = next(cf.quotients,i)
-getindex(cf::FiniteContinuedFraction, i) = getindex(cf.quotients, i)
-length(cf::FiniteContinuedFraction) = length(cf.quotients)
