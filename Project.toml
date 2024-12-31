@@ -1,0 +1,7 @@
+name = "ContinuedFractions"
+uuid = "34204b3b-6383-4f99-b4ed-4e5c140bfc56"
+authors = ["John Myles White <jmw@johnmyleswhite.com> and contributors"]
+version = "0.2.0-DEV"
+
+[compat]
+julia = "1.6"
