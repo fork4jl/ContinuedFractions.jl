@@ -8,7 +8,7 @@ end
 eps_error(c::AbstractIrrational) = 1<<20 # assume accurate to within 20 bits?
 
 function compute!(cf::IrrationalContinuedFraction{T,C}, prec::Int) where {T<:Integer,C}
-    with_bigfloat_precision(prec) do
+    setprecision(BigFloat, prec) do
         qs = T[]
         r = big(1.0)
         r_p = big(C())
@@ -33,7 +33,7 @@ function compute!(cf::IrrationalContinuedFraction{T,C}, prec::Int) where {T<:Int
 end
 
 function continuedfraction(c::AbstractIrrational, ::Type{T}=Int) where {T<:Integer}
-    cf = IrrationalContinuedFraction{T,typeof(c)}(get_bigfloat_precision(),T[])
+    cf = IrrationalContinuedFraction{T,typeof(c)}(precision(BigFloat),T[])
 end
 
 start(cf::IrrationalContinuedFraction) = 1
