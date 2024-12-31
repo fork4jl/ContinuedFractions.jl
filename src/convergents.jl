@@ -3,8 +3,6 @@ struct ConvergentIterator{T<:Integer, CF<:ContinuedFraction{T}}
     cf::CF
 end
 
-convergents(x::Real) = ConvergentIterator(continuedfraction(x))
-
 #= Iteration Interfaces =#
 Base.length(it::ConvergentIterator) = length(it.cf)
 Base.eltype(it::ConvergentIterator{T,CF}) where {T,CF} = Rational{T}
@@ -22,3 +20,18 @@ function Base.iterate(it::ConvergentIterator{T,CF}, state::ConvStateType{T}) whe
 end
 Base.iterate(it::ConvergentIterator{T,CF}) where {T<:Integer,CF} =
     iterate(it, (1, one(T)//zero(T), zero(T)//one(T)))
+
+
+"""
+    convergents(x::Real) -> ConvergentIterator
+
+Compute the convergents of a input.
+
+# Returns
+- `ConvergentIterator`: An iterator over the convergents of the continued fraction.
+
+# Examples
+```
+```
+"""
+convergents(x::Real) = ConvergentIterator(continuedfraction(x))
