@@ -20,7 +20,7 @@ end
 continuedfraction(x::AbstractFloat, ::Type{T}=Int) where {T<:Integer} =
     continuedfraction(x, one(x), T)
 
-continuedfraction(x::Rational, ::Type{T}=Int) where {T<:Integer} =
+continuedfraction(x::Rational{T}) where {T<:Integer} =
     continuedfraction(x.num, x.den, T)                 
 
 start(cf::FiniteContinuedFraction) = start(cf.quotients)
