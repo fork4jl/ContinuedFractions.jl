@@ -1,6 +1,6 @@
 # ContinuedFractions.jl
 
-<!-- [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://fork4jl.github.io/ContinuedFractions.jl/stable/) -->
+[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://fork4jl.github.io/ContinuedFractions.jl/stable/)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://fork4jl.github.io/ContinuedFractions.jl/dev/)
 [![Build Status](https://github.com/fork4jl/ContinuedFractions.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/fork4jl/ContinuedFractions.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/fork4jl/ContinuedFractions.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/fork4jl/ContinuedFractions.jl)
